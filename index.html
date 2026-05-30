@@ -139,13 +139,22 @@ function renderHome(){
   div.appendChild(bar);
 
   // Search
-  const srch=el('div',{style:'position:relative;margin-bottom:10px;'});
-  const si=el('input',{type:'text',placeholder:'Search name, position, keyword...',style:'width:100%;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.05);color:#fff;font-family:inherit;font-size:12px;padding:8px 12px 8px 32px;outline:none;'});
-  si.value=state.searchQ;
-  si.oninput=e=>{state.searchQ=e.target.value;render();};
-  srch.innerHTML=`<span style="position:absolute;left:10px;top:50%;transform:translateY(-50%);color:#525252;font-size:12px;">🔍</span>`;
-  srch.appendChild(si);
-  div.appendChild(srch);
+const srch = el('div', { style: 'position:relative;margin-bottom:10px;' });
+const si = el('input', { type: 'text', placeholder: 'Search name, position, keyword...', style: 'width:100%;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.05);color:#fff;font-family:inherit;font-size:12px;padding:8px 12px 8px 32px;outline:none;' });
+si.value = state.searchQ;
+si.oninput = e => {
+    state.searchQ = e.target.value;
+    render();
+    // Re-find the freshly rendered input and put the cursor back at the end
+    const newSi = document.querySelector('input[placeholder^="Search name"]');
+    if (newSi) {
+        newSi.focus();
+        newSi.setSelectionRange(newSi.value.length, newSi.value.length);
+    }
+};
+srch.innerHTML = `<span style="position:absolute;left:10px;top:50%;transform:translateY(-50%);color:#525252;font-size:12px;">🔍</span>`;
+srch.appendChild(si);
+div.appendChild(srch);
 
   // Cat chips
   const chips=el('div',{style:'display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px;'});
@@ -213,11 +222,20 @@ function renderRegistry(){
   hdr.appendChild(countBox);
   div.appendChild(hdr);
 
-  // Search
-  const si=el('input',{type:'text',placeholder:'Search...',style:'width:100%;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.05);color:#fff;font-family:inherit;font-size:12px;padding:8px 12px;outline:none;margin-bottom:16px;'});
-  si.value=state.searchQ;
-  si.oninput=e=>{state.searchQ=e.target.value;render();};
-  div.appendChild(si);
+
+// Search
+const si = el('input', { type: 'text', placeholder: 'Search...', style: 'width:100%;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.05);color:#fff;font-family:inherit;font-size:12px;padding:8px 12px;outline:none;margin-bottom:16px;' });
+si.value = state.searchQ;
+si.oninput = e => {
+    state.searchQ = e.target.value;
+    render();
+    const newSi = document.querySelector('input[placeholder="Search..."]');
+    if (newSi) {
+        newSi.focus();
+        newSi.setSelectionRange(newSi.value.length, newSi.value.length);
+    }
+};
+div.appendChild(si);
 
   // Add new button
   const addBtn=el('button',{style:'background:#22d3ee;color:#000;border:none;font-size:11px;font-family:inherit;letter-spacing:0.2em;text-transform:uppercase;padding:8px 16px;margin-bottom:20px;font-weight:900;'},'+ Register_New_Unit');
